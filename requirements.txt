@@ -5,5 +5,3 @@ seaborn
 pydeck
 folium
 streamlit-folium
-
-pip install -r requirements.txt
