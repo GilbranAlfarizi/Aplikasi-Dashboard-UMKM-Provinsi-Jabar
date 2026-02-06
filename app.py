@@ -127,51 +127,31 @@ st.caption("Grafik menunjukkan perkembangan total UMKM Jawa Barat dari tahun ke 
 
 st.divider()
 
-percent_df = (
-    df_f
-    .groupby(["tahun", "jenis_usaha"])["jumlah_umkm"]
+st.markdown(f"##  Komposisi UMKM per Jenis Usaha ({tahun_pie})")
+
+pie_df = (
+    df_f[df_f["tahun"] == tahun_pie]     
+    .groupby("jenis_usaha")["jumlah_umkm"]
     .sum()
-    .reset_index()
+    .reindex(jenis_filter)                
+    .dropna()
 )
 
-percent_df["persen"] = (
-    percent_df["jumlah_umkm"] /
-    percent_df.groupby("tahun")["jumlah_umkm"].transform("sum")
-) * 100
+if pie_df.empty:
+    st.warning("Tidak ada data untuk tahun dan jenis usaha yang dipilih.")
+else:
+    fig, ax = plt.subplots(figsize=(7, 7))
+    ax.pie(
+        pie_df.values,
+        labels=pie_df.index,
+        autopct="%1.1f%%",
+        startangle=140
+    )
+    ax.axis("equal")
 
-st.markdown("##  Komposisi UMKM per Jenis Usaha (Stacked Bar %)")
-
-stack_df = (
-    percent_df[percent_df["jenis_usaha"].isin(jenis_filter)]
-    .sort_values("tahun")
-)
-
-fig = px.bar(
-    stack_df,
-    x="tahun",
-    y="persen",
-    color="jenis_usaha",
-    title="Komposisi UMKM per Jenis Usaha (%)",
-    labels={
-        "persen": "Persentase (%)",
-        "tahun": "Tahun",
-        "jenis_usaha": "Jenis Usaha"
-    },
-    hover_data={
-        "jumlah_umkm": ":,",
-        "persen": ".2f"
-    }
-)
-
-fig.update_layout(
-    barmode="stack",
-    yaxis_ticksuffix="%",
-    legend_title_text="Jenis Usaha"
-)
-
-st.plotly_chart(fig, use_container_width=True)
+    st.pyplot(fig)
 
 st.caption(
-    "Stacked bar chart interaktif menggunakan Plotly. "
-    "Hover untuk melihat jumlah dan persentase UMKM per jenis usaha."
+    "Pie chart menunjukkan proporsi UMKM berdasarkan jenis usaha "
+    "pada tahun yang dipilih."
 )
