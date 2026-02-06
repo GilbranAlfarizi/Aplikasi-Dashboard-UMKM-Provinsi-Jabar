@@ -211,4 +211,9 @@ else:
 
     st.pyplot(fig)
 
+st.dataframe(
+    percent_df[percent_df["tahun"] == tahun_pie]
+    .sort_values("persen", ascending=False)
+)
+
 
