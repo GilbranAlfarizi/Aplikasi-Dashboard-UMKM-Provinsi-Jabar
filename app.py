@@ -167,28 +167,29 @@ st.divider()
 st.markdown(f"##  Komposisi UMKM per Jenis Usaha ({tahun_pie})")
 
 pie_df = (
-    df[
-        (df["tahun"] == tahun_pie) &
-        (df["jenis_usaha"].isin(jenis_filter))
-    ]
+    df_f[df_f["tahun"] == tahun_pie]      # 🔥 pakai df_f (hasil filter utama)
     .groupby("jenis_usaha")["jumlah_umkm"]
     .sum()
-    .reindex(JENIS_USAHA_LIST)
+    .reindex(jenis_filter)                 # 🔥 urut sesuai pilihan user
     .dropna()
 )
 
-fig, ax = plt.subplots(figsize=(7, 7))
-ax.pie(
-    pie_df.values,
-    labels=pie_df.index,
-    autopct="%1.1f%%",
-    startangle=140
-)
-ax.axis("equal")
+if pie_df.empty:
+    st.warning("Tidak ada data untuk tahun dan jenis usaha yang dipilih.")
+else:
+    fig, ax = plt.subplots(figsize=(7, 7))
+    ax.pie(
+        pie_df.values,
+        labels=pie_df.index,
+        autopct="%1.1f%%",
+        startangle=140
+    )
+    ax.axis("equal")
 
-st.pyplot(fig)
+    st.pyplot(fig)
 
 st.caption(
     "Pie chart menunjukkan proporsi UMKM berdasarkan jenis usaha "
-    "pada satu tahun tertentu."
+    "pada tahun yang dipilih."
 )
+
