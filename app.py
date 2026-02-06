@@ -126,69 +126,51 @@ st.caption("Grafik menunjukkan perkembangan total UMKM Jawa Barat dari tahun ke 
 
 st.divider()
 
-
-st.markdown("##  Peta Persebaran UMKM Jawa Barat")
-
-map_df = (
+percent_df = (
     df_f
-    .groupby("nama_kabupaten_kota", as_index=False)["jumlah_umkm"]
+    .groupby(["tahun", "jenis_usaha"])["jumlah_umkm"]
     .sum()
-    .merge(coord, on="nama_kabupaten_kota", how="left")
-    .dropna(subset=["latitude", "longitude"])
+    .reset_index()
 )
 
-m = folium.Map(
-    location=[-6.9, 107.6],
-    zoom_start=6,
-    tiles="OpenStreetMap"
+percent_df["persen"] = (
+    percent_df["jumlah_umkm"] /
+    percent_df.groupby("tahun")["jumlah_umkm"].transform("sum")
+) * 100
+
+st.markdown("##  Komposisi UMKM per Jenis Usaha (Stacked Bar %)")
+
+stack_df = (
+    percent_df[percent_df["jenis_usaha"].isin(jenis_filter)]
+    .pivot(index="tahun", columns="jenis_usaha", values="persen")
+    .fillna(0)
+    .sort_index()
 )
 
-cluster = MarkerCluster(disableClusteringAtZoom=10).add_to(m)
+fig, ax = plt.subplots(figsize=(12, 6))
 
-for _, r in map_df.iterrows():
-    folium.Marker(
-        location=[r["latitude"], r["longitude"]],
-        popup=f"""
-        <b>{r['nama_kabupaten_kota']}</b><br>
-        Jumlah UMKM: {int(r['jumlah_umkm']):,}
-        """
-    ).add_to(cluster)
-
-st_folium(m, width=1200, height=450)
-
-st.caption(
-    "Peta menggunakan marker clustering: zoom rendah menampilkan agregasi, "
-    "dan akan terurai menjadi detail wilayah saat diperbesar."
-)
-
-st.divider()
-
-st.markdown(f"##  Komposisi UMKM per Jenis Usaha ({tahun_pie})")
-
-pie_df = (
-    df_f[df_f["tahun"] == tahun_pie]     
-    .groupby("jenis_usaha")["jumlah_umkm"]
-    .sum()
-    .reindex(jenis_filter)                 
-    .dropna()
-)
-
-if pie_df.empty:
-    st.warning("Tidak ada data untuk tahun dan jenis usaha yang dipilih.")
-else:
-    fig, ax = plt.subplots(figsize=(7, 7))
-    ax.pie(
-        pie_df.values,
-        labels=pie_df.index,
-        autopct="%1.1f%%",
-        startangle=140
+bottom = None
+for col in stack_df.columns:
+    ax.bar(
+        stack_df.index,
+        stack_df[col],
+        bottom=bottom,
+        label=col
     )
-    ax.axis("equal")
+    bottom = stack_df[col] if bottom is None else bottom + stack_df[col]
 
-    st.pyplot(fig)
-
-st.caption(
-    "Pie chart menunjukkan proporsi UMKM berdasarkan jenis usaha "
-    "pada tahun yang dipilih."
+ax.set_ylabel("Persentase (%)")
+ax.set_xlabel("Tahun")
+ax.set_title("Perubahan Komposisi Jenis Usaha UMKM per Tahun")
+ax.legend(
+    title="Jenis Usaha",
+    bbox_to_anchor=(1.02, 1),
+    loc="upper left"
 )
 
+st.pyplot(fig)
+
+st.caption(
+    "Stacked bar chart menunjukkan perubahan komposisi UMKM per jenis usaha "
+    "dalam persen (total tiap tahun = 100%)."
+)
