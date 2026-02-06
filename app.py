@@ -163,14 +163,37 @@ st.caption(
 
 st.divider()
 
+percent_df = (
+    df_f
+    .groupby(["tahun", "jenis_usaha"])["jumlah_umkm"]
+    .sum()
+    .reset_index()
+)
+
+percent_df["persen"] = (
+    percent_df["jumlah_umkm"] /
+    percent_df.groupby("tahun")["jumlah_umkm"].transform("sum")
+) * 100
 
 st.markdown(f"##  Komposisi UMKM per Jenis Usaha ({tahun_pie})")
 
 pie_df = (
-    df_f[df_f["tahun"] == tahun_pie]      # 🔥 pakai df_f (hasil filter utama)
+    df_f[df_f["tahun"] == tahun_pie]      
     .groupby("jenis_usaha")["jumlah_umkm"]
     .sum()
-    .reindex(jenis_filter)                 # 🔥 urut sesuai pilihan user
+    .reindex(jenis_filter)                 
+    .dropna()
+)
+
+st.markdown(f"##  Komposisi UMKM per Jenis Usaha ({tahun_pie})")
+
+pie_df = (
+    percent_df[
+        (percent_df["tahun"] == tahun_pie) &
+        (percent_df["jenis_usaha"].isin(jenis_filter))
+    ]
+    .set_index("jenis_usaha")
+    .reindex(jenis_filter)
     .dropna()
 )
 
@@ -179,7 +202,7 @@ if pie_df.empty:
 else:
     fig, ax = plt.subplots(figsize=(7, 7))
     ax.pie(
-        pie_df.values,
+        pie_df["persen"],
         labels=pie_df.index,
         autopct="%1.1f%%",
         startangle=140
@@ -188,8 +211,4 @@ else:
 
     st.pyplot(fig)
 
-st.caption(
-    "Pie chart menunjukkan proporsi UMKM berdasarkan jenis usaha "
-    "pada tahun yang dipilih."
-)
 
