@@ -4,6 +4,7 @@ import folium
 from folium.plugins import MarkerCluster
 from streamlit_folium import st_folium
 import matplotlib.pyplot as plt
+import plotly.express as px
 
 
 st.set_page_config(
@@ -142,35 +143,35 @@ st.markdown("##  Komposisi UMKM per Jenis Usaha (Stacked Bar %)")
 
 stack_df = (
     percent_df[percent_df["jenis_usaha"].isin(jenis_filter)]
-    .pivot(index="tahun", columns="jenis_usaha", values="persen")
-    .fillna(0)
-    .sort_index()
+    .sort_values("tahun")
 )
 
-fig, ax = plt.subplots(figsize=(12, 6))
-
-bottom = None
-for col in stack_df.columns:
-    ax.bar(
-        stack_df.index,
-        stack_df[col],
-        bottom=bottom,
-        label=col
-    )
-    bottom = stack_df[col] if bottom is None else bottom + stack_df[col]
-
-ax.set_ylabel("Persentase (%)")
-ax.set_xlabel("Tahun")
-ax.set_title("Perubahan Komposisi Jenis Usaha UMKM per Tahun")
-ax.legend(
-    title="Jenis Usaha",
-    bbox_to_anchor=(1.02, 1),
-    loc="upper left"
+fig = px.bar(
+    stack_df,
+    x="tahun",
+    y="persen",
+    color="jenis_usaha",
+    title="Komposisi UMKM per Jenis Usaha (%)",
+    labels={
+        "persen": "Persentase (%)",
+        "tahun": "Tahun",
+        "jenis_usaha": "Jenis Usaha"
+    },
+    hover_data={
+        "jumlah_umkm": ":,",
+        "persen": ".2f"
+    }
 )
 
-st.pyplot(fig)
+fig.update_layout(
+    barmode="stack",
+    yaxis_ticksuffix="%",
+    legend_title_text="Jenis Usaha"
+)
+
+st.plotly_chart(fig, use_container_width=True)
 
 st.caption(
-    "Stacked bar chart menunjukkan perubahan komposisi UMKM per jenis usaha "
-    "dalam persen (total tiap tahun = 100%)."
+    "Stacked bar chart interaktif menggunakan Plotly. "
+    "Hover untuk melihat jumlah dan persentase UMKM per jenis usaha."
 )
