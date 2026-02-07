@@ -170,30 +170,52 @@ with col_chart:
     line_df = df_f.groupby("tahun")["jumlah_umkm"].sum()
     st.line_chart(line_df)
 
-    if tahun_pie:
-        st.markdown(f"###  Proporsi UMKM {tahun_pie}")
+if tahun_pie:
+    st.markdown(f"### 🍰 Komposisi UMKM Tahun {tahun_pie}")
+    st.markdown(
+        f"<p style='color:#9ca3af; font-size:14px; margin-top:-10px;'>"
+        f"Distribusi UMKM berdasarkan jenis usaha terpilih pada tahun {tahun_pie}."
+        f"</p>",
+        unsafe_allow_html=True
+    )
+
+    pie_data = (
+        df[
+            (df["tahun"] == tahun_pie) &
+            (df["jenis_usaha"].isin(jenis_filter))
+        ]
+        .groupby("jenis_usaha")["jumlah_umkm"]
+        .sum()
+    )
+
+    if pie_data.empty:
+        st.info("Tidak ada data untuk kombinasi filter tersebut.")
     else:
-        st.markdown("###  Proporsi UMKM")
+        
+        colors = [
+            "#22c55e",  
+            "#16a34a",
+            "#4ade80",
+            "#15803d",
+            "#86efac",
+            "#14532d",
+            "#bbf7d0",
+        ]
 
-    if tahun_pie:
-        pie_data = (
-            df[df["tahun"] == tahun_pie]
-            .groupby("jenis_usaha")["jumlah_umkm"].sum()
-        )
-
-        fig, ax = plt.subplots(figsize=(4, 4))
+        fig, ax = plt.subplots(figsize=(4.5, 4.5))
         ax.pie(
             pie_data,
             labels=pie_data.index,
             autopct="%1.1f%%",
-            startangle=140
+            startangle=140,
+            colors=colors[:len(pie_data)],
+            textprops={"color": "#e5e7eb", "fontsize": 9}
         )
         ax.axis("equal")
+        fig.patch.set_facecolor("none")
+
         st.pyplot(fig)
-    else:
-        st.info("Pilih Tahun Pie Chart di sidebar.")
 
-
-
-
-
+else:
+    st.markdown("### 🍰 Komposisi UMKM")
+    st.info("Pilih Tahun Pie Chart di sidebar.")
