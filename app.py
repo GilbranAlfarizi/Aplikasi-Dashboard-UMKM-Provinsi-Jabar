@@ -13,32 +13,6 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-div[data-testid="stMarkdown"] p.main-title {
-    font-size: 50px !important;
-    font-weight: 900 !important;
-    margin-bottom: 0;
-}
-
-div[data-testid="stMarkdown"] p.sub-title {
-    color: gray;
-    font-size: 18px;
-    margin-top: 0;
-    margin-bottom: 20px;
-}
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown(
-    '<p class="main-title">Dashboard UMKM Provinsi Jawa Barat</p>',
-    unsafe_allow_html=True
-)
-st.markdown(
-    '<p class="sub-title">Analisis data UMKM periode 2016–2023</p>',
-    unsafe_allow_html=True
-)
-
-st.markdown("""
-<style>
 
 /* ==============================
    SIDEBAR SELECT & MULTISELECT
@@ -87,6 +61,33 @@ div[data-testid="stSelectbox"] {
 
 </style>
 """, unsafe_allow_html=True)
+
+
+st.markdown("""
+<style>
+div[data-testid="stMarkdown"] p.main-title {
+    font-size: 50px !important;
+    font-weight: 900 !important;
+    margin-bottom: 0;
+}
+
+div[data-testid="stMarkdown"] p.sub-title {
+    color: gray;
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown(
+    '<p class="main-title">Dashboard UMKM Provinsi Jawa Barat</p>',
+    unsafe_allow_html=True
+)
+st.markdown(
+    '<p class="sub-title">Analisis data UMKM periode 2016–2023</p>',
+    unsafe_allow_html=True
+)
 
 @st.cache_data
 def load_data():
@@ -187,6 +188,7 @@ with col_side:
         st.pyplot(fig)
     else:
         st.info("Pilih data untuk melihat komposisi")
+
 
 
 
