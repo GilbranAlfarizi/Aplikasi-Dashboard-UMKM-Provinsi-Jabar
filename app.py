@@ -44,6 +44,14 @@ section[data-testid="stSidebar"] div[data-baseweb="option"][aria-selected="true"
     color: white !important;
 }
 
+
+/* rounded & shadow */
+div[data-testid="stMetric"] {
+    background-color: #020617;
+    padding: 15px;
+    border-radius: 12px;
+}
+
 </style>
 
 <p class="main-title">Dashboard UMKM Provinsi Jawa Barat</p>
@@ -149,6 +157,7 @@ with col_side:
         st.pyplot(fig)
     else:
         st.info("Pilih data untuk melihat komposisi")
+
 
 
 
