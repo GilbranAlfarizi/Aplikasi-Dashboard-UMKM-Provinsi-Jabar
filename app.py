@@ -179,6 +179,20 @@ if not tahun_filter or not jenis_filter:
 
 df_f = df[df["tahun"].isin(tahun_filter) & df["jenis_usaha"].isin(jenis_filter)]
 
+growth_text = "N/A"
+growth_value = None
+
+if len(tahun_filter) == 1:
+    selected_year = tahun_filter[0]
+    prev_year = selected_year - 1
+
+    total_now = df[df["tahun"] == selected_year]["jumlah_umkm"].sum()
+    total_prev = df[df["tahun"] == prev_year]["jumlah_umkm"].sum()
+
+    if total_prev > 0:
+        growth_value = ((total_now - total_prev) / total_prev) * 100
+        growth_text = f"{growth_value:+.2f}%"
+
 
 col_map, col_kpi = st.columns([0.7, 0.3])
 
@@ -210,6 +224,11 @@ with col_kpi:
     st.metric("Total UMKM", f"{int(df_f['jumlah_umkm'].sum()):,}")
     st.metric("Wilayah", f"{df_f['nama_kabupaten_kota'].nunique()} Kab/Kota")
     st.metric("Kategori", f"{df_f['jenis_usaha'].nunique()} Jenis")
+    st.metric(
+        "Pertumbuhan UMKM",
+        growth_text,
+        help="Persentase perubahan jumlah UMKM dibanding tahun sebelumnya"
+    )
 
 
 st.markdown("---")
@@ -278,6 +297,7 @@ with col_comp:
         }
 
         st_echarts(option, height="300px")
+
 
 
 
