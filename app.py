@@ -63,7 +63,7 @@ div[data-testid="stDataFrame"] {
     border-radius: 16px;
     border: 1px solid #1e293b;
     padding: 14px;
-    box-shadow: 0 20px 30px rgba(0,0,0,0.45);
+    box-shadow: 0 100px 30px rgba(0,0,0,0.45);
 }
 
 /* grid */
@@ -278,6 +278,7 @@ with col_comp:
         }
 
         st_echarts(option, height="300px")
+
 
 
 
