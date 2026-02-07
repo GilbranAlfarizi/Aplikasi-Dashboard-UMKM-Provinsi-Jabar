@@ -168,7 +168,7 @@ jenis_filter = st.sidebar.multiselect(
 )
 
 tahun_pie = st.sidebar.selectbox(
-    "Tahun untuk Pie Chart",
+    "Tahun untuk EChart",
     [None] + sorted(df["tahun"].unique()),
     format_func=lambda x: "— Pilih Tahun —" if x is None else str(x)
 )
@@ -278,6 +278,7 @@ with col_comp:
         }
 
         st_echarts(option, height="300px")
+
 
 
 
