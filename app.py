@@ -5,18 +5,14 @@ from folium.plugins import MarkerCluster
 from streamlit_folium import st_folium
 import matplotlib.pyplot as plt
 
-# =====================
-# PAGE CONFIG
-# =====================
+
 st.set_page_config(
     page_title="Dashboard UMKM Jawa Barat",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# =====================
-# GLOBAL STYLE
-# =====================
+
 st.markdown("""
 <style>
 html, body { font-family: "Inter", sans-serif; }
@@ -73,9 +69,7 @@ hr {
 <p class="sub-title">Analisis data UMKM periode 2016–2023</p>
 """, unsafe_allow_html=True)
 
-# =====================
-# LOAD DATA
-# =====================
+
 @st.cache_data
 def load_data():
     df = pd.read_csv("UMKM_JABAR_2016_2023.csv")
@@ -90,9 +84,7 @@ def load_data():
 
 df, coord = load_data()
 
-# =====================
-# SIDEBAR FILTER
-# =====================
+
 st.sidebar.header("Filter Data")
 
 JENIS_USAHA_LIST = sorted(df["jenis_usaha"].unique())
@@ -119,9 +111,7 @@ if not tahun_filter or not jenis_filter:
 
 df_f = df[df["tahun"].isin(tahun_filter) & df["jenis_usaha"].isin(jenis_filter)]
 
-# =====================
-# SECTION 1: MAP + KPI
-# =====================
+
 col_map, col_kpi = st.columns([0.7, 0.3])
 
 with col_map:
@@ -153,14 +143,10 @@ with col_kpi:
     st.metric("Wilayah", f"{df_f['nama_kabupaten_kota'].nunique()} Kab/Kota")
     st.metric("Kategori", f"{df_f['jenis_usaha'].nunique()} Jenis")
 
-# =====================
-# FULL WIDTH SEPARATOR
-# =====================
+
 st.markdown("---")
 
-# =====================
-# SECTION 2: TABLE + CHART
-# =====================
+
 col_table, col_chart = st.columns([0.7, 0.3])
 
 with col_table:
@@ -184,9 +170,7 @@ with col_chart:
     line_df = df_f.groupby("tahun")["jumlah_umkm"].sum()
     st.line_chart(line_df)
 
-    st.markdown("---")
-
-    st.markdown("### 🍰 Komposisi UMKM")
+    st.markdown("###  Komposisi UMKM")
     if tahun_pie:
         pie_data = (
             df[df["tahun"] == tahun_pie]
@@ -204,3 +188,4 @@ with col_chart:
         st.pyplot(fig)
     else:
         st.info("Pilih Tahun Pie Chart di sidebar.")
+
