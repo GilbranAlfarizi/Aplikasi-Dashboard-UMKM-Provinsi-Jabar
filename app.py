@@ -37,6 +37,57 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+st.markdown("""
+<style>
+
+/* ==============================
+   SIDEBAR SELECT & MULTISELECT
+   ============================== */
+
+/* pill/tag multiselect */
+section[data-testid="stSidebar"]
+div[data-baseweb="tag"] {
+    background-color: #1e40af !important;   /* biru navy elegan */
+    color: #ffffff !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+}
+
+/* icon X di tag */
+section[data-testid="stSidebar"]
+div[data-baseweb="tag"] svg {
+    fill: white !important;
+}
+
+/* container input */
+section[data-testid="stSidebar"]
+div[data-baseweb="select"] > div {
+    border-radius: 10px !important;
+    border: 1px solid #cbd5e1 !important;
+}
+
+/* dropdown option hover */
+section[data-testid="stSidebar"]
+div[data-baseweb="option"]:hover {
+    background-color: #e0e7ff !important;
+}
+
+/* dropdown option selected */
+section[data-testid="stSidebar"]
+div[data-baseweb="option"][aria-selected="true"] {
+    background-color: #1e40af !important;
+    color: white !important;
+}
+
+/* text value selectbox */
+section[data-testid="stSidebar"]
+div[data-testid="stSelectbox"] {
+    font-weight: 600 !important;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
 @st.cache_data
 def load_data():
     df = pd.read_csv("UMKM_JABAR_2016_2023.csv")
@@ -51,52 +102,6 @@ def load_data():
     return df, coord
 
 df, coord = load_data()
-
-st.markdown("""
-<style>
-
-
-section[data-testid="stSidebar"] {
-    background-color: #f8fafc;
-}
-
-
-div[data-baseweb="tag"] {
-    background-color: #2563eb !important;   /* biru elegan */
-    color: white !important;
-    border-radius: 8px !important;
-    font-weight: 600;
-}
-
- 
-div[data-baseweb="tag"] span {
-    color: white !important;
-}
-
-DROPDOWN CONTAINER
-div[data-baseweb="select"] > div {
-    border-radius: 8px;
-}
-
-
-div[data-baseweb="option"]:hover {
-    background-color: #e0e7ff !important;
-}
-
-
-div[data-baseweb="option"][aria-selected="true"] {
-    background-color: #2563eb !important;
-    color: white !important;
-}
-
-
-div[data-testid="stSelectbox"] div {
-    font-weight: 600;
-}
-
-</style>
-""", unsafe_allow_html=True)
-
 
 st.sidebar.header("Filter Data")
 JENIS_USAHA_LIST = sorted(["AGRIBISNIS", "AKSESORIS", "FASHION", "INDUSTRI", "MAKANAN", "MINUMAN", "KERAJINAN", "JASA", "KULINER", "OBAT-OBATAN"])
@@ -182,6 +187,7 @@ with col_side:
         st.pyplot(fig)
     else:
         st.info("Pilih data untuk melihat komposisi")
+
 
 
 
