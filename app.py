@@ -14,42 +14,98 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-/* ===== JUDUL ===== */
+/* =====================
+   GLOBAL STYLE
+   ===================== */
+html, body {
+    font-family: "Inter", sans-serif;
+}
+
+/* =====================
+   JUDUL DASHBOARD
+   ===================== */
 p.main-title {
-    font-size: 50px !important;
+    font-size: 52px !important;
     font-weight: 900 !important;
-    margin-bottom: 0;
+    margin-bottom: 4px;
+    color: #e5e7eb;
 }
 
 p.sub-title {
-    color: gray;
+    color: #9ca3af;
     font-size: 18px;
     margin-top: 0;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
 }
 
-/* ===== SIDEBAR ===== */
-section[data-testid="stSidebar"] div[data-baseweb="tag"] {
-    background-color: #1e40af !important;
-    color: white !important;
-    border-radius: 10px !important;
+/* =====================
+   SECTION TITLE
+   ===================== */
+h3 {
+    color: #e5e7eb;
+    font-weight: 700;
+    margin-bottom: 12px;
 }
 
-section[data-testid="stSidebar"] div[data-baseweb="option"]:hover {
-    background-color: #e0e7ff !important;
-}
-
-section[data-testid="stSidebar"] div[data-baseweb="option"][aria-selected="true"] {
-    background-color: #1e40af !important;
-    color: white !important;
-}
-
-
-/* rounded & shadow */
+/* =====================
+   METRIC CARD (PREMIUM)
+   ===================== */
 div[data-testid="stMetric"] {
+    background: linear-gradient(145deg, #020617, #020617);
+    padding: 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(34,197,94,0.35); /* hijau UMKM */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+}
+
+div[data-testid="stMetricLabel"] {
+    color: #9ca3af;
+    font-size: 14px;
+}
+
+div[data-testid="stMetricValue"] {
+    color: #22c55e;
+    font-size: 28px;
+    font-weight: 800;
+}
+
+/* =====================
+   DATAFRAME CARD
+   ===================== */
+div[data-testid="stDataFrame"] {
     background-color: #020617;
-    padding: 15px;
-    border-radius: 12px;
+    border-radius: 14px;
+    border: 1px solid #1e293b;
+    padding: 10px;
+}
+
+/* =====================
+   CHART CONTAINER
+   ===================== */
+div[data-testid="stPlotlyChart"],
+div[data-testid="stPyplotChart"],
+div[data-testid="stLineChart"] {
+    background-color: #020617;
+    border-radius: 14px;
+    padding: 16px;
+    border: 1px solid #1e293b;
+}
+
+/* =====================
+   MAP (FOLIUM)
+   ===================== */
+iframe {
+    border-radius: 14px !important;
+    border: 1px solid #1e293b;
+}
+
+/* =====================
+   SEPARATOR
+   ===================== */
+hr {
+    border: none;
+    border-top: 1px solid #1e293b;
+    margin: 22px 0;
 }
 
 </style>
@@ -157,6 +213,7 @@ with col_side:
         st.pyplot(fig)
     else:
         st.info("Pilih data untuk melihat komposisi")
+
 
 
 
