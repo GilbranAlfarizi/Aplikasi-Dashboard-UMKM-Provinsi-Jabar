@@ -214,7 +214,7 @@ with col_kpi:
 
 st.markdown("---")
 
-st.markdown(f"### 📋 Detail Data UMKM}")
+st.markdown(f"### 📋 Detail Data UMKM")
 
 tabel_df = df_f[[
     "id",
@@ -278,4 +278,5 @@ with col_comp:
         }
 
         st_echarts(option, height="300px")
+
 
