@@ -60,7 +60,7 @@ div[data-testid="stMetricValue"] {
 
 div[data-testid="stDataFrame"] {
     background-color: #020617;
-    border-radius: 30px;
+    border-radius: 16px;
     border: 1px solid #1e293b;
     padding: 14px;
     box-shadow: 0 12px 30px rgba(0,0,0,0.45);
@@ -278,6 +278,7 @@ with col_comp:
         }
 
         st_echarts(option, height="300px")
+
 
 
 
