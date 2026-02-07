@@ -158,6 +158,7 @@ tabel_df = df_f[[
 ]].copy()
 
 tabel_df.columns = ["ID", "Kabupaten / Kota", "Jenis Usaha", "Jumlah UMKM", "Tahun"]
+tabel_df["Jumlah UMKM"] = tabel_df["Jumlah UMKM"].map("{:,}".format)
 
 st.dataframe(
     tabel_df,
@@ -210,6 +211,7 @@ with col_comp:
         }
 
         st_echarts(option, height="300px")
+
 
 
 
