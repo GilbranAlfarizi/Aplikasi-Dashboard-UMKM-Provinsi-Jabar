@@ -52,6 +52,52 @@ def load_data():
 
 df, coord = load_data()
 
+st.markdown("""
+<style>
+
+SIDEBAR BACKGROUND 
+section[data-testid="stSidebar"] {
+    background-color: #f8fafc;
+}
+
+MULTISELECT TAG 
+div[data-baseweb="tag"] {
+    background-color: #2563eb !important;   /* biru elegan */
+    color: white !important;
+    border-radius: 8px !important;
+    font-weight: 600;
+}
+
+tombol X di tag 
+div[data-baseweb="tag"] span {
+    color: white !important;
+}
+
+DROPDOWN CONTAINER
+div[data-baseweb="select"] > div {
+    border-radius: 8px;
+}
+
+OPTION SAAT HOVER
+div[data-baseweb="option"]:hover {
+    background-color: #e0e7ff !important;
+}
+
+OPTION TERPILIH
+div[data-baseweb="option"][aria-selected="true"] {
+    background-color: #2563eb !important;
+    color: white !important;
+}
+
+SELECTBOX VALUE
+div[data-testid="stSelectbox"] div {
+    font-weight: 600;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+
 st.sidebar.header("Filter Data")
 JENIS_USAHA_LIST = sorted(["AGRIBISNIS", "AKSESORIS", "FASHION", "INDUSTRI", "MAKANAN", "MINUMAN", "KERAJINAN", "JASA", "KULINER", "OBAT-OBATAN"])
 
@@ -136,6 +182,7 @@ with col_side:
         st.pyplot(fig)
     else:
         st.info("Pilih data untuk melihat komposisi")
+
 
 
 
