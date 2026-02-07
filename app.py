@@ -17,7 +17,7 @@ st.set_page_config(
 )
 
 # =====================
-# GLOBAL STYLE (CARD-BASED)
+# BASIC STYLE (AMAN)
 # =====================
 st.markdown("""
 <style>
@@ -25,57 +25,46 @@ html, body {
     font-family: "Inter", sans-serif;
 }
 
-/* TITLE */
-.main-title {
+p.main-title {
     font-size: 52px;
     font-weight: 900;
+    margin-bottom: 4px;
     color: #e5e7eb;
-    margin-bottom: 6px;
-}
-.sub-title {
-    color: #9ca3af;
-    font-size: 18px;
-    margin-bottom: 28px;
 }
 
-/* UNIVERSAL CARD */
-.card {
-    background-color: #020617;
-    border-radius: 18px;
-    border: 1px solid #1e293b;
-    padding: 16px;
-    box-shadow: 0 14px 40px rgba(0,0,0,0.45);
+p.sub-title {
+    color: #9ca3af;
+    font-size: 18px;
     margin-bottom: 24px;
 }
 
-/* METRIC CLEAN */
-div[data-testid="stMetric"] {
-    background-color: transparent;
-    border: none;
-    box-shadow: none;
+h3 {
+    color: #e5e7eb;
+    font-weight: 700;
 }
+
+/* metric sedikit rapi, TANPA utak-atik tabel */
+div[data-testid="stMetric"] {
+    background-color: #020617;
+    padding: 16px;
+    border-radius: 14px;
+    border: 1px solid #1e293b;
+}
+
 div[data-testid="stMetricValue"] {
     color: #22c55e;
     font-size: 28px;
     font-weight: 800;
 }
 
-/* MAP */
+/* map saja dibulatkan */
 iframe {
     border-radius: 14px !important;
-    border: none;
-}
-
-/* SEPARATOR */
-hr {
-    border: none;
-    border-top: 1px solid #1e293b;
-    margin: 32px 0;
 }
 </style>
 
-<div class="main-title">Dashboard UMKM Provinsi Jawa Barat</div>
-<div class="sub-title">Analisis data UMKM periode 2016–2023</div>
+<p class="main-title">Dashboard UMKM Provinsi Jawa Barat</p>
+<p class="sub-title">Analisis data UMKM periode 2016–2023</p>
 """, unsafe_allow_html=True)
 
 
@@ -98,7 +87,7 @@ df, coord = load_data()
 
 
 # =====================
-# SIDEBAR
+# SIDEBAR FILTER
 # =====================
 st.sidebar.header("Filter Data")
 
@@ -122,7 +111,10 @@ if not tahun_filter or not jenis_filter:
     st.warning("⚠️ Silakan pilih minimal satu Tahun dan satu Jenis Usaha di sidebar.")
     st.stop()
 
-df_f = df[df["tahun"].isin(tahun_filter) & df["jenis_usaha"].isin(jenis_filter)]
+df_f = df[
+    (df["tahun"].isin(tahun_filter)) &
+    (df["jenis_usaha"].isin(jenis_filter))
+]
 
 
 # =====================
@@ -131,7 +123,6 @@ df_f = df[df["tahun"].isin(tahun_filter) & df["jenis_usaha"].isin(jenis_filter)]
 col_map, col_kpi = st.columns([0.7, 0.3])
 
 with col_map:
-    st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.markdown("### 🗺️ Peta Persebaran UMKM")
 
     map_df = (
@@ -144,7 +135,7 @@ with col_map:
 
     for _, r in map_df.iterrows():
         folium.CircleMarker(
-            [r["latitude"], r["longitude"]],
+            location=[r["latitude"], r["longitude"]],
             radius=8,
             popup=f"<b>{r['nama_kabupaten_kota']}</b><br>{int(r['jumlah_umkm']):,}",
             color="#22c55e",
@@ -152,16 +143,13 @@ with col_map:
             fill_opacity=0.7
         ).add_to(cluster)
 
-    st_folium(m, height=430, width="100%")
-    st.markdown("</div>", unsafe_allow_html=True)
+    st_folium(m, height=450, width="100%")
 
 with col_kpi:
-    st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.markdown("### 📊 Ringkasan")
     st.metric("Total UMKM", f"{int(df_f['jumlah_umkm'].sum()):,}")
     st.metric("Wilayah", f"{df_f['nama_kabupaten_kota'].nunique()} Kab/Kota")
     st.metric("Kategori", f"{df_f['jenis_usaha'].nunique()} Jenis")
-    st.markdown("</div>", unsafe_allow_html=True)
 
 
 st.markdown("---")
@@ -170,7 +158,6 @@ st.markdown("---")
 # =====================
 # SECTION 2 — TABLE
 # =====================
-st.markdown("<div class='card'>", unsafe_allow_html=True)
 st.markdown("### 📋 Detail Data UMKM")
 
 tabel_df = df_f[[
@@ -181,7 +168,14 @@ tabel_df = df_f[[
     "tahun"
 ]].copy()
 
-tabel_df.columns = ["ID", "Kabupaten / Kota", "Jenis Usaha", "Jumlah UMKM", "Tahun"]
+tabel_df.columns = [
+    "ID",
+    "Kabupaten / Kota",
+    "Jenis Usaha",
+    "Jumlah UMKM",
+    "Tahun"
+]
+
 tabel_df["Jumlah UMKM"] = tabel_df["Jumlah UMKM"].map("{:,}".format)
 
 st.dataframe(
@@ -190,8 +184,6 @@ st.dataframe(
     height=420,
     hide_index=True
 )
-
-st.markdown("</div>", unsafe_allow_html=True)
 
 
 st.markdown("---")
@@ -203,15 +195,12 @@ st.markdown("---")
 col_trend, col_comp = st.columns([0.45, 0.55])
 
 with col_trend:
-    st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.markdown("### 📈 Tren Tahunan")
     line_df = df_f.groupby("tahun")["jumlah_umkm"].sum()
-    st.line_chart(line_df, height=280)
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.line_chart(line_df, height=300)
 
 with col_comp:
-    st.markdown("<div class='card'>", unsafe_allow_html=True)
-    st.markdown(f"### 📊 Proporsi UMKM Tahun {tahun_pie}")
+    st.markdown("### 📊 Proporsi UMKM")
 
     if tahun_pie:
         bar_df = (
@@ -230,25 +219,18 @@ with col_comp:
             "xAxis": {
                 "type": "category",
                 "data": bar_df["jenis_usaha"].tolist(),
-                "axisLabel": {"rotate": 30, "color": "#e5e7eb"}
+                "axisLabel": {"rotate": 30}
             },
             "yAxis": {
-                "type": "value",
-                "axisLabel": {"color": "#e5e7eb"},
-                "splitLine": {"lineStyle": {"color": "#1e293b"}}
+                "type": "value"
             },
             "series": [{
                 "type": "bar",
                 "data": bar_df["jumlah_umkm"].tolist(),
-                "itemStyle": {
-                    "color": "#22c55e",
-                    "borderRadius": [6, 6, 0, 0]
-                }
+                "itemStyle": {"color": "#22c55e"}
             }]
         }
 
         st_echarts(option, height="300px")
     else:
         st.info("Pilih Tahun untuk melihat grafik komposisi.")
-
-    st.markdown("</div>", unsafe_allow_html=True)
