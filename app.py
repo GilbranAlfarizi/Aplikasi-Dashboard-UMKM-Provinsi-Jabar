@@ -171,14 +171,8 @@ with col_chart:
     st.line_chart(line_df)
 
     if tahun_pie:
-        st.markdown(f"### 🍰 Komposisi UMKM Tahun {tahun_pie}")
-        st.markdown(
-            f"<p style='color:#9ca3af; font-size:14px; margin-top:-10px;'>"
-            f"Distribusi UMKM berdasarkan jenis usaha terpilih pada tahun {tahun_pie}."
-            f"</p>",
-            unsafe_allow_html=True
-        )
-    
+        st.markdown(f"### Proporsi UMKM {tahun_pie}")
+        
         pie_data = (
             df[
                 (df["tahun"] == tahun_pie) &
@@ -219,3 +213,4 @@ with col_chart:
     else:
         st.markdown("### 🍰 Komposisi UMKM")
         st.info("Pilih Tahun Pie Chart di sidebar.")
+
