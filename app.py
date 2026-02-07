@@ -8,7 +8,7 @@ from streamlit_echarts import st_echarts
 
 
 st.set_page_config(
-    page_title="Dashboard UMKM Jawa Barat",
+    page_title="Kelompok 4 Dashboard UMKM Jawa Barat",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -84,7 +84,7 @@ div[data-testid="stDataFrame"] thead tr th {
 div[data-testid="stDataFrame"] tbody tr td {
     background-color: #020617 !important;
     color: #e5e7eb;
-    border-bottom: 10px solid #1e293b;
+    border-bottom: 1px solid #1e293b;
 }
 
 /* hover */
@@ -278,6 +278,7 @@ with col_comp:
         }
 
         st_echarts(option, height="300px")
+
 
 
 
