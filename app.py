@@ -123,7 +123,7 @@ with col_map:
         .merge(coord, on="nama_kabupaten_kota")
     )
 
-    m = folium.Map(location=[-6.9, 107.6], zoom_start=7)
+    m = folium.Map(location=[-6.9, 107.6], zoom_start=6)
     cluster = MarkerCluster().add_to(m)
 
     for _, r in map_df.iterrows():
@@ -172,14 +172,7 @@ with col_chart:
     st.line_chart(line_df)
 
     if tahun_pie:
-        st.markdown(f"### 📊 Komposisi UMKM Tahun {tahun_pie}")
-        st.markdown(
-            f"<p style='color:#9ca3af; font-size:14px; margin-top:-10px;'>"
-            f"Jumlah UMKM berdasarkan jenis usaha terpilih pada tahun {tahun_pie}."
-            f"</p>",
-            unsafe_allow_html=True
-        )
-    
+        st.markdown(f"### Proporsi UMKM Tahun {tahun_pie}")
        
         bar_df = (
             df[
@@ -246,3 +239,4 @@ with col_chart:
     else:
         st.markdown("### 📊 Komposisi UMKM")
         st.info("Pilih Tahun Pie Chart di sidebar.")
+
