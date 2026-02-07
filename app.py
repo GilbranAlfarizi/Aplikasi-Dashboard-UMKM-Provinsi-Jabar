@@ -13,7 +13,7 @@ st.set_page_config(
 
 st.markdown("""
     <style>
-    [data-testid="stMetricValue"] { font-size: 22px; }
+    [data-testid="stMetricValue"] { font-size: 32px; }
     .main-title { font-size: 32px; font-weight: bold; margin-bottom: 0; }
     .sub-title { color: gray; margin-top: 0; margin-bottom: 20px; }
     </style>
@@ -121,3 +121,4 @@ with col_side:
         st.pyplot(fig)
     else:
         st.info("Pilih data untuk melihat komposisi")
+
