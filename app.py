@@ -170,7 +170,17 @@ with col_chart:
     line_df = df_f.groupby("tahun")["jumlah_umkm"].sum()
     st.line_chart(line_df)
 
-    st.markdown("###  Komposisi UMKM")
+    if tahun_pie:
+    st.markdown(f"###  Komposisi UMKM Tahun {tahun_pie}")
+    st.markdown(
+        f"<p style='color:#9ca3af; font-size:14px; margin-top:-10px;'>"
+        f"Proporsi UMKM per jenis usaha ({tahun_pie})."
+        f"</p>",
+        unsafe_allow_html=True
+    )
+    else:
+        st.markdown("### 🍰 Komposisi UMKM")
+
     if tahun_pie:
         pie_data = (
             df[df["tahun"] == tahun_pie]
@@ -188,4 +198,5 @@ with col_chart:
         st.pyplot(fig)
     else:
         st.info("Pilih Tahun Pie Chart di sidebar.")
+
 
