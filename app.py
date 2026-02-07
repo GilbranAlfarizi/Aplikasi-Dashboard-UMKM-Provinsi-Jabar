@@ -12,15 +12,33 @@ st.set_page_config(
 )
 
 st.markdown("""
-    <style>
-    [data-testid="stMetricValue"] { font-size: 32px; }
-    .main-title { font-size: 50px; font-weight: bold; margin-bottom: 0; }
-    .sub-title { color: gray; margin-top: 0; margin-bottom: 20px; }
-    </style>
-    """, unsafe_allow_html=True)
+<style>
+[data-testid="stMetricValue"] { font-size: 32px; }
 
-st.markdown('<p class="main-title">Dashboard UMKM Provinsi Jawa Barat</p>', unsafe_allow_html=True)
-st.markdown('<p class="sub-title">Analisis data UMKM periode 2016–2023</p>', unsafe_allow_html=True)
+.main-title {
+    font-size: 56px;
+    font-weight: 800;
+    margin-bottom: 0;
+}
+
+.sub-title {
+    color: gray;
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown(
+    '<p class="main-title">Dashboard UMKM Provinsi Jawa Barat</p>',
+    unsafe_allow_html=True
+)
+st.markdown(
+    '<p class="sub-title">Analisis data UMKM periode 2016–2023</p>',
+    unsafe_allow_html=True
+)
+
 
 @st.cache_data
 def load_data():
@@ -121,5 +139,6 @@ with col_side:
         st.pyplot(fig)
     else:
         st.info("Pilih data untuk melihat komposisi")
+
 
 
