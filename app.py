@@ -133,14 +133,18 @@ df_f = df[(df["tahun"].isin(tahun_filter)) & (df["jenis_usaha"].isin(jenis_filte
 col_main, col_side = st.columns([0.7, 0.3])
 
 with col_main:
+    # =====================
+    # PETA
+    # =====================
     st.markdown("### 🗺️ Peta Persebaran UMKM")
+
     map_df = (
         df_f.groupby("nama_kabupaten_kota", as_index=False)["jumlah_umkm"].sum()
         .merge(coord, on="nama_kabupaten_kota", how="left")
         .dropna(subset=["latitude", "longitude"])
     )
 
-    m = folium.Map(location=[-6.9, 107.6], zoom_start=6)
+    m = folium.Map(location=[-6.9, 107.6], zoom_start=8)
     cluster = MarkerCluster().add_to(m)
 
     for _, r in map_df.iterrows():
@@ -148,43 +152,39 @@ with col_main:
             location=[r["latitude"], r["longitude"]],
             radius=8,
             popup=f"<b>{r['nama_kabupaten_kota']}</b><br>Total: {int(r['jumlah_umkm']):,}",
-            color="#1f77b4",
+            color="#22c55e",
             fill=True,
             fill_opacity=0.7
         ).add_to(cluster)
 
     st_folium(m, width="100%", height=450)
-    
-st.markdown("### 📋 Detail Data UMKM")
 
-# pilih kolom yang ingin ditampilkan
-tabel_df = df_f[[
-    "id",
-    "nama_kabupaten_kota",
-    "jenis_usaha",
-    "jumlah_umkm",
-    "tahun"
-]].copy()
+    # =====================
+    # TABEL (DI BAWAH PETA)
+    # =====================
+    st.markdown("### 📋 Detail Data UMKM")
 
-# opsional: rapikan nama kolom biar enak dibaca
-tabel_df.columns = [
-    "ID",
-    "Kabupaten / Kota",
-    "Jenis Usaha",
-    "Jumlah UMKM",
-    "Tahun"
-]
+    tabel_df = df_f[[
+        "id",
+        "nama_kabupaten_kota",
+        "jenis_usaha",
+        "jumlah_umkm",
+        "tahun"
+    ]].copy()
 
-tabel_df = tabel_df.sort_values("Jumlah UMKM", ascending=False)
-tabel_df["Jumlah UMKM"] = tabel_df["Jumlah UMKM"].map("{:,}".format)
+    tabel_df.columns = [
+        "ID",
+        "Kabupaten / Kota",
+        "Jenis Usaha",
+        "Jumlah UMKM",
+        "Tahun"
+    ]
 
-
-# tampilkan full table
-st.dataframe(
-    tabel_df,
-    use_container_width=True,
-    height=500
-)
+    st.dataframe(
+        tabel_df,
+        use_container_width=True,
+        height=400
+    )
 
 with col_side:
     st.markdown("### 📊 Ringkasan")
@@ -215,6 +215,7 @@ with col_side:
         st.pyplot(fig)
     else:
         st.info("Pilih data untuk melihat komposisi")
+
 
 
 
