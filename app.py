@@ -171,13 +171,13 @@ with col_chart:
     st.line_chart(line_df)
 
     if tahun_pie:
-    st.markdown(f"###  Komposisi UMKM Tahun {tahun_pie}")
-    st.markdown(
-        f"<p style='color:#9ca3af; font-size:14px; margin-top:-10px;'>"
-        f"Proporsi UMKM per jenis usaha ({tahun_pie})."
-        f"</p>",
-        unsafe_allow_html=True
-    )
+        st.markdown(f"###  Komposisi UMKM Tahun {tahun_pie}")
+        st.markdown(
+            f"<p style='color:#9ca3af; font-size:14px; margin-top:-10px;'>"
+            f"Proporsi UMKM per jenis usaha ({tahun_pie})."
+            f"</p>",
+            unsafe_allow_html=True
+        )
     else:
         st.markdown("### 🍰 Komposisi UMKM")
 
@@ -198,5 +198,6 @@ with col_chart:
         st.pyplot(fig)
     else:
         st.info("Pilih Tahun Pie Chart di sidebar.")
+
 
 
