@@ -13,75 +13,42 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-div[data-testid="stMarkdown"] p.main-title {
+
+/* ===== JUDUL ===== */
+p.main-title {
     font-size: 50px !important;
     font-weight: 900 !important;
     margin-bottom: 0;
 }
 
-div[data-testid="stMarkdown"] p.sub-title {
+p.sub-title {
     color: gray;
     font-size: 18px;
     margin-top: 0;
     margin-bottom: 20px;
 }
 
-/* ==============================
-   SIDEBAR SELECT & MULTISELECT
-   ============================== */
-
-/* pill/tag multiselect */
-section[data-testid="stSidebar"]
-div[data-baseweb="tag"] {
-    background-color: #1e40af !important;   /* biru navy elegan */
-    color: #ffffff !important;
+/* ===== SIDEBAR ===== */
+section[data-testid="stSidebar"] div[data-baseweb="tag"] {
+    background-color: #1e40af !important;
+    color: white !important;
     border-radius: 10px !important;
-    font-weight: 600 !important;
 }
 
-/* icon X di tag */
-section[data-testid="stSidebar"]
-div[data-baseweb="tag"] svg {
-    fill: white !important;
-}
-
-/* container input */
-section[data-testid="stSidebar"]
-div[data-baseweb="select"] > div {
-    border-radius: 10px !important;
-    border: 1px solid #cbd5e1 !important;
-}
-
-/* dropdown option hover */
-section[data-testid="stSidebar"]
-div[data-baseweb="option"]:hover {
+section[data-testid="stSidebar"] div[data-baseweb="option"]:hover {
     background-color: #e0e7ff !important;
 }
 
-/* dropdown option selected */
-section[data-testid="stSidebar"]
-div[data-baseweb="option"][aria-selected="true"] {
+section[data-testid="stSidebar"] div[data-baseweb="option"][aria-selected="true"] {
     background-color: #1e40af !important;
     color: white !important;
 }
 
-/* text value selectbox */
-section[data-testid="stSidebar"]
-div[data-testid="stSelectbox"] {
-    font-weight: 600 !important;
-}
-
 </style>
-""", unsafe_allow_html=True)
 
-st.markdown(
-    '<p class="main-title">Dashboard UMKM Provinsi Jawa Barat</p>',
-    unsafe_allow_html=True
-)
-st.markdown(
-    '<p class="sub-title">Analisis data UMKM periode 2016–2023</p>',
-    unsafe_allow_html=True
-)
+<p class="main-title">Dashboard UMKM Provinsi Jawa Barat</p>
+<p class="sub-title">Analisis data UMKM periode 2016–2023</p>
+""", unsafe_allow_html=True)
 
 @st.cache_data
 def load_data():
@@ -182,6 +149,7 @@ with col_side:
         st.pyplot(fig)
     else:
         st.info("Pilih data untuk melihat komposisi")
+
 
 
 
