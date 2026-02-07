@@ -13,15 +13,13 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-[data-testid="stMetricValue"] { font-size: 32px; }
-
-.main-title {
-    font-size: 56px;
-    font-weight: 800;
+div[data-testid="stMarkdown"] p.main-title {
+    font-size: 56px !important;
+    font-weight: 900 !important;
     margin-bottom: 0;
 }
 
-.sub-title {
+div[data-testid="stMarkdown"] p.sub-title {
     color: gray;
     font-size: 18px;
     margin-top: 0;
@@ -38,7 +36,6 @@ st.markdown(
     '<p class="sub-title">Analisis data UMKM periode 2016–2023</p>',
     unsafe_allow_html=True
 )
-
 
 @st.cache_data
 def load_data():
@@ -139,6 +136,7 @@ with col_side:
         st.pyplot(fig)
     else:
         st.info("Pilih data untuk melihat komposisi")
+
 
 
 
