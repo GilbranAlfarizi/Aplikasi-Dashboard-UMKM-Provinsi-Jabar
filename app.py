@@ -133,9 +133,6 @@ df_f = df[(df["tahun"].isin(tahun_filter)) & (df["jenis_usaha"].isin(jenis_filte
 col_main, col_side = st.columns([0.7, 0.3])
 
 with col_main:
-    # =====================
-    # PETA
-    # =====================
     st.markdown("### 🗺️ Peta Persebaran UMKM")
 
     map_df = (
@@ -144,7 +141,7 @@ with col_main:
         .dropna(subset=["latitude", "longitude"])
     )
 
-    m = folium.Map(location=[-6.9, 107.6], zoom_start=8)
+    m = folium.Map(location=[-6.9, 107.6], zoom_start=6)
     cluster = MarkerCluster().add_to(m)
 
     for _, r in map_df.iterrows():
@@ -158,10 +155,8 @@ with col_main:
         ).add_to(cluster)
 
     st_folium(m, width="100%", height=450)
-
-    # =====================
-    # TABEL (DI BAWAH PETA)
-    # =====================
+    
+    st.markdown("---")
     st.markdown("### 📋 Detail Data UMKM")
 
     tabel_df = df_f[[
@@ -179,11 +174,15 @@ with col_main:
         "Jumlah UMKM",
         "Tahun"
     ]
+    
+    tabel_df["Jumlah UMKM"] = tabel_df["Jumlah UMKM"].map("{:,}".format)
+    height = min(600, 35 * len(tabel_df) + 40)
 
     st.dataframe(
-        tabel_df,
-        use_container_width=True,
-        height=400
+    tabel_df,
+    use_container_width=True,
+    height=500,
+    hide_index=True
     )
 
 with col_side:
@@ -215,6 +214,7 @@ with col_side:
         st.pyplot(fig)
     else:
         st.info("Pilih data untuk melihat komposisi")
+
 
 
 
