@@ -155,8 +155,32 @@ with col_main:
 
     st_folium(m, width="100%", height=450)
     
-    st.markdown("### 📋 Detail Data")
-    st.dataframe(df_f, use_container_width=True, height=300)
+st.markdown("### 📋 Detail Data UMKM")
+
+# pilih kolom yang ingin ditampilkan
+tabel_df = df_f[[
+    "id",
+    "nama_kabupaten_kota",
+    "jenis_usaha",
+    "jumlah_umkm",
+    "tahun"
+]].copy()
+
+# opsional: rapikan nama kolom biar enak dibaca
+tabel_df.columns = [
+    "ID",
+    "Kabupaten / Kota",
+    "Jenis Usaha",
+    "Jumlah UMKM",
+    "Tahun"
+]
+
+# tampilkan full table
+st.dataframe(
+    tabel_df,
+    use_container_width=True,
+    height=500
+)
 
 with col_side:
     st.markdown("### 📊 Ringkasan")
@@ -172,7 +196,7 @@ with col_side:
     
     st.markdown("---")
     
-    st.markdown(f"### 🍰 Komposisi {tahun_pie}")
+    st.markdown(f"###  Komposisi {tahun_pie}")
     pie_data = (
         df[(df["tahun"] == tahun_pie) & (df["jenis_usaha"].isin(jenis_filter))]
         .groupby("jenis_usaha")["jumlah_umkm"].sum()
@@ -187,6 +211,7 @@ with col_side:
         st.pyplot(fig)
     else:
         st.info("Pilih data untuk melihat komposisi")
+
 
 
 
