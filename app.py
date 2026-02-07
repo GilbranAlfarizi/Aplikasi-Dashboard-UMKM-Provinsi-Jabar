@@ -7,34 +7,38 @@ import matplotlib.pyplot as plt
 from streamlit_echarts import st_echarts
 
 
+# =====================
+# PAGE CONFIG
+# =====================
 st.set_page_config(
     page_title="Dashboard UMKM Jawa Barat",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
+# =====================
+# GLOBAL STYLE (CARD-BASED)
+# =====================
 st.markdown("""
 <style>
-
 html, body {
     font-family: "Inter", sans-serif;
 }
 
-
+/* TITLE */
 .main-title {
     font-size: 52px;
     font-weight: 900;
     color: #e5e7eb;
     margin-bottom: 6px;
 }
-
 .sub-title {
     color: #9ca3af;
     font-size: 18px;
     margin-bottom: 28px;
 }
 
-
+/* UNIVERSAL CARD */
 .card {
     background-color: #020617;
     border-radius: 18px;
@@ -44,23 +48,29 @@ html, body {
     margin-bottom: 24px;
 }
 
-
+/* METRIC CLEAN */
 div[data-testid="stMetric"] {
     background-color: transparent;
     border: none;
     box-shadow: none;
 }
-
 div[data-testid="stMetricValue"] {
     color: #22c55e;
     font-size: 28px;
     font-weight: 800;
 }
 
-
+/* MAP */
 iframe {
-    border-radius: 16px !important;
+    border-radius: 14px !important;
     border: none;
+}
+
+/* SEPARATOR */
+hr {
+    border: none;
+    border-top: 1px solid #1e293b;
+    margin: 32px 0;
 }
 </style>
 
@@ -69,6 +79,9 @@ iframe {
 """, unsafe_allow_html=True)
 
 
+# =====================
+# LOAD DATA
+# =====================
 @st.cache_data
 def load_data():
     df = pd.read_csv("UMKM_JABAR_2016_2023.csv")
@@ -84,9 +97,10 @@ def load_data():
 df, coord = load_data()
 
 
+# =====================
+# SIDEBAR
+# =====================
 st.sidebar.header("Filter Data")
-
-JENIS_USAHA_LIST = sorted(df["jenis_usaha"].unique())
 
 tahun_filter = st.sidebar.multiselect(
     "Pilih Tahun",
@@ -95,11 +109,11 @@ tahun_filter = st.sidebar.multiselect(
 
 jenis_filter = st.sidebar.multiselect(
     "Pilih Jenis Usaha",
-    JENIS_USAHA_LIST
+    sorted(df["jenis_usaha"].unique())
 )
 
 tahun_pie = st.sidebar.selectbox(
-    "Tahun untuk Pie Chart",
+    "Tahun untuk Grafik Komposisi",
     [None] + sorted(df["tahun"].unique()),
     format_func=lambda x: "— Pilih Tahun —" if x is None else str(x)
 )
@@ -111,9 +125,13 @@ if not tahun_filter or not jenis_filter:
 df_f = df[df["tahun"].isin(tahun_filter) & df["jenis_usaha"].isin(jenis_filter)]
 
 
+# =====================
+# SECTION 1 — MAP + KPI
+# =====================
 col_map, col_kpi = st.columns([0.7, 0.3])
 
 with col_map:
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.markdown("### 🗺️ Peta Persebaran UMKM")
 
     map_df = (
@@ -134,17 +152,25 @@ with col_map:
             fill_opacity=0.7
         ).add_to(cluster)
 
-    st_folium(m, height=450, width="100%")
+    st_folium(m, height=430, width="100%")
+    st.markdown("</div>", unsafe_allow_html=True)
 
 with col_kpi:
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.markdown("### 📊 Ringkasan")
     st.metric("Total UMKM", f"{int(df_f['jumlah_umkm'].sum()):,}")
     st.metric("Wilayah", f"{df_f['nama_kabupaten_kota'].nunique()} Kab/Kota")
     st.metric("Kategori", f"{df_f['jenis_usaha'].nunique()} Jenis")
+    st.markdown("</div>", unsafe_allow_html=True)
 
 
 st.markdown("---")
 
+
+# =====================
+# SECTION 2 — TABLE
+# =====================
+st.markdown("<div class='card'>", unsafe_allow_html=True)
 st.markdown("### 📋 Detail Data UMKM")
 
 tabel_df = df_f[[
@@ -161,20 +187,30 @@ tabel_df["Jumlah UMKM"] = tabel_df["Jumlah UMKM"].map("{:,}".format)
 st.dataframe(
     tabel_df,
     use_container_width=True,
-    height=420,  
+    height=420,
     hide_index=True
 )
 
+st.markdown("</div>", unsafe_allow_html=True)
+
+
 st.markdown("---")
 
-col_trend, col_comp = st.columns([0.4, 1])
+
+# =====================
+# SECTION 3 — CHARTS
+# =====================
+col_trend, col_comp = st.columns([0.45, 0.55])
 
 with col_trend:
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.markdown("### 📈 Tren Tahunan")
     line_df = df_f.groupby("tahun")["jumlah_umkm"].sum()
-    st.line_chart(line_df, height=300)
+    st.line_chart(line_df, height=280)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 with col_comp:
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.markdown(f"### 📊 Proporsi UMKM Tahun {tahun_pie}")
 
     if tahun_pie:
@@ -204,10 +240,15 @@ with col_comp:
             "series": [{
                 "type": "bar",
                 "data": bar_df["jumlah_umkm"].tolist(),
-                "itemStyle": {"color": "#22c55e"}
+                "itemStyle": {
+                    "color": "#22c55e",
+                    "borderRadius": [6, 6, 0, 0]
+                }
             }]
         }
 
         st_echarts(option, height="300px")
+    else:
+        st.info("Pilih Tahun untuk melihat grafik komposisi.")
 
-
+    st.markdown("</div>", unsafe_allow_html=True)
