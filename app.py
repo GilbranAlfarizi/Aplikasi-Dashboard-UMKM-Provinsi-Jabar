@@ -140,7 +140,7 @@ with col_main:
         .dropna(subset=["latitude", "longitude"])
     )
 
-    m = folium.Map(location=[-6.9, 107.6], zoom_start=8)
+    m = folium.Map(location=[-6.9, 107.6], zoom_start=5)
     cluster = MarkerCluster().add_to(m)
 
     for _, r in map_df.iterrows():
@@ -187,6 +187,7 @@ with col_side:
         st.pyplot(fig)
     else:
         st.info("Pilih data untuk melihat komposisi")
+
 
 
 
