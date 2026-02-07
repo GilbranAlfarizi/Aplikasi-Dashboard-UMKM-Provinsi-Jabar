@@ -69,7 +69,7 @@ div[data-testid="stDataFrame"] {
 /* grid */
 div[data-testid="stDataFrame"] div[role="grid"] {
     background-color: #020617;
-    border-radius: 12px;
+    border-radius: 20px;
 }
 
 /* header */
@@ -278,6 +278,7 @@ with col_comp:
         }
 
         st_echarts(option, height="300px")
+
 
 
 
