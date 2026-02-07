@@ -175,6 +175,10 @@ tabel_df.columns = [
     "Tahun"
 ]
 
+tabel_df = tabel_df.sort_values("Jumlah UMKM", ascending=False)
+tabel_df["Jumlah UMKM"] = tabel_df["Jumlah UMKM"].map("{:,}".format)
+
+
 # tampilkan full table
 st.dataframe(
     tabel_df,
@@ -211,6 +215,7 @@ with col_side:
         st.pyplot(fig)
     else:
         st.info("Pilih data untuk melihat komposisi")
+
 
 
 
