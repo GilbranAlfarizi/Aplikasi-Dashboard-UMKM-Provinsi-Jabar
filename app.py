@@ -13,6 +13,18 @@ st.set_page_config(
 
 st.markdown("""
 <style>
+div[data-testid="stMarkdown"] p.main-title {
+    font-size: 50px !important;
+    font-weight: 900 !important;
+    margin-bottom: 0;
+}
+
+div[data-testid="stMarkdown"] p.sub-title {
+    color: gray;
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
 
 /* ==============================
    SIDEBAR SELECT & MULTISELECT
@@ -59,24 +71,6 @@ div[data-testid="stSelectbox"] {
     font-weight: 600 !important;
 }
 
-</style>
-""", unsafe_allow_html=True)
-
-
-st.markdown("""
-<style>
-div[data-testid="stMarkdown"] p.main-title {
-    font-size: 50px !important;
-    font-weight: 900 !important;
-    margin-bottom: 0;
-}
-
-div[data-testid="stMarkdown"] p.sub-title {
-    color: gray;
-    font-size: 18px;
-    margin-top: 0;
-    margin-bottom: 20px;
-}
 </style>
 """, unsafe_allow_html=True)
 
@@ -188,6 +182,7 @@ with col_side:
         st.pyplot(fig)
     else:
         st.info("Pilih data untuk melihat komposisi")
+
 
 
 
