@@ -214,7 +214,7 @@ with col_kpi:
 
 st.markdown("---")
 
-st.markdown("<div class='section-card'>### 📋 Detail Data UMKM</div>", unsafe_allow_html=True)
+st.markdown(f"### 📋 Detail Data UMKM}")
 
 tabel_df = df_f[[
     "id",
@@ -230,7 +230,7 @@ tabel_df["Jumlah UMKM"] = tabel_df["Jumlah UMKM"].map("{:,}".format)
 st.dataframe(
     tabel_df,
     use_container_width=True,
-    height=200,  
+    height=420,  
     hide_index=True
 )
 
@@ -278,3 +278,4 @@ with col_comp:
         }
 
         st_echarts(option, height="300px")
+
