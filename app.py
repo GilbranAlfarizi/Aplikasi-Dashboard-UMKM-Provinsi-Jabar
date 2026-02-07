@@ -168,7 +168,7 @@ st.dataframe(
 
 st.markdown("---")
 
-col_trend, col_comp = st.columns([0.4, 0.8])
+col_trend, col_comp = st.columns([0.4, 1])
 
 with col_trend:
     st.markdown("### 📈 Tren Tahunan")
@@ -210,5 +210,6 @@ with col_comp:
         }
 
         st_echarts(option, height="300px")
+
 
 
