@@ -14,7 +14,7 @@ st.set_page_config(
 st.markdown("""
 <style>
 div[data-testid="stMarkdown"] p.main-title {
-    font-size: 56px !important;
+    font-size: 50px !important;
     font-weight: 900 !important;
     margin-bottom: 0;
 }
@@ -136,6 +136,7 @@ with col_side:
         st.pyplot(fig)
     else:
         st.info("Pilih data untuk melihat komposisi")
+
 
 
 
