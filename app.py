@@ -171,7 +171,7 @@ with col_chart:
     st.line_chart(line_df)
 
     if tahun_pie:
-        st.markdown(f"###  Proporsi UMKM ({tahun_pie}")
+        st.markdown(f"###  Proporsi UMKM {tahun_pie}")
     else:
         st.markdown("###  Proporsi UMKM")
 
@@ -192,6 +192,7 @@ with col_chart:
         st.pyplot(fig)
     else:
         st.info("Pilih Tahun Pie Chart di sidebar.")
+
 
 
 
