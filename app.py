@@ -111,13 +111,11 @@ JENIS_USAHA_LIST = sorted(["AGRIBISNIS", "AKSESORIS", "FASHION", "INDUSTRI", "MA
 tahun_filter = st.sidebar.multiselect(
     "Pilih Tahun",
     options=sorted(df["tahun"].unique()),
-    default=[2023]
 )
 
 jenis_filter = st.sidebar.multiselect(
     "Pilih Jenis Usaha",
     options=JENIS_USAHA_LIST,
-    default=JENIS_USAHA_LIST[:3]
 )
 
 tahun_pie = st.sidebar.selectbox(
@@ -189,6 +187,7 @@ with col_side:
         st.pyplot(fig)
     else:
         st.info("Pilih data untuk melihat komposisi")
+
 
 
 
