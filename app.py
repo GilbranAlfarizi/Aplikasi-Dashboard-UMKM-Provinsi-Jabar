@@ -13,31 +13,43 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-
 st.markdown("""
 <style>
-html, body { font-family: "Inter", sans-serif; }
+html, body {
+    font-family: "Inter", sans-serif;
+    background-color: #020617;
+}
 
 p.main-title {
     font-size: 52px;
     font-weight: 900;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
     color: #e5e7eb;
 }
 
 p.sub-title {
     color: #9ca3af;
     font-size: 18px;
-    margin-bottom: 24px;
+    margin-bottom: 26px;
 }
 
-h3 { color: #e5e7eb; font-weight: 700; }
+h3 {
+    color: #e5e7eb;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
 
 div[data-testid="stMetric"] {
-    background-color: #020617;
-    padding: 16px;
-    border-radius: 14px;
-    border: 1px solid rgba(34,197,94,0.35);
+    background: linear-gradient(180deg, #020617, #020617);
+    padding: 18px;
+    border-radius: 16px;
+    border: 1px solid rgba(34,197,94,0.4);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+}
+
+div[data-testid="stMetricLabel"] {
+    color: #9ca3af;
+    font-size: 14px;
 }
 
 div[data-testid="stMetricValue"] {
@@ -46,24 +58,79 @@ div[data-testid="stMetricValue"] {
     font-weight: 800;
 }
 
-div[data-testid="stDataFrame"],
-div[data-testid="stLineChart"],
-div[data-testid="stPyplotChart"] {
+div[data-testid="stDataFrame"] {
     background-color: #020617;
-    border-radius: 14px;
+    border-radius: 16px;
     border: 1px solid #1e293b;
-    padding: 12px;
+    padding: 14px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+}
+
+/* grid */
+div[data-testid="stDataFrame"] div[role="grid"] {
+    background-color: #020617;
+    border-radius: 12px;
+}
+
+/* header */
+div[data-testid="stDataFrame"] thead tr th {
+    background-color: #020617 !important;
+    color: #9ca3af !important;
+    font-weight: 600;
+    border-bottom: 1px solid #1e293b;
+}
+
+/* body cell */
+div[data-testid="stDataFrame"] tbody tr td {
+    background-color: #020617 !important;
+    color: #e5e7eb;
+    border-bottom: 1px solid #1e293b;
+}
+
+/* hover */
+div[data-testid="stDataFrame"] tbody tr:hover td {
+    background-color: #020617;
+}
+
+div[data-testid="stLineChart"],
+div[data-testid="stPyplotChart"],
+div[data-testid="stPlotlyChart"] {
+    background-color: #020617;
+    border-radius: 16px;
+    border: 1px solid #1e293b;
+    padding: 16px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.45);
 }
 
 iframe {
-    border-radius: 14px !important;
+    border-radius: 16px !important;
     border: 1px solid #1e293b;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.45);
 }
 
 hr {
+    border: none;
     border-top: 1px solid #1e293b;
-    margin: 28px 0;
+    margin: 32px 0;
 }
+
+
+.section-card {
+    border-left: 3px solid #22c55e;
+    padding-left: 12px;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
 </style>
 
 <p class="main-title">Dashboard UMKM Provinsi Jawa Barat</p>
@@ -211,6 +278,7 @@ with col_comp:
         }
 
         st_echarts(option, height="300px")
+
 
 
 
