@@ -4,6 +4,7 @@ import folium
 from folium.plugins import MarkerCluster
 from streamlit_folium import st_folium
 import matplotlib.pyplot as plt
+from streamlit_echarts import st_echarts
 
 
 st.set_page_config(
@@ -171,46 +172,77 @@ with col_chart:
     st.line_chart(line_df)
 
     if tahun_pie:
-        st.markdown(f"### Proporsi UMKM {tahun_pie}")
-        
-        pie_data = (
+        st.markdown(f"### 📊 Komposisi UMKM Tahun {tahun_pie}")
+        st.markdown(
+            f"<p style='color:#9ca3af; font-size:14px; margin-top:-10px;'>"
+            f"Jumlah UMKM berdasarkan jenis usaha terpilih pada tahun {tahun_pie}."
+            f"</p>",
+            unsafe_allow_html=True
+        )
+    
+       
+        bar_df = (
             df[
                 (df["tahun"] == tahun_pie) &
                 (df["jenis_usaha"].isin(jenis_filter))
             ]
             .groupby("jenis_usaha")["jumlah_umkm"]
             .sum()
+            .reset_index()
+            .sort_values("jumlah_umkm", ascending=False)
         )
     
-        if pie_data.empty:
+        if bar_df.empty:
             st.info("Tidak ada data untuk kombinasi filter tersebut.")
         else:
-            
-            colors = [
-                "#22c55e",  
-                "#16a34a",
-                "#4ade80",
-                "#15803d",
-                "#86efac",
-                "#14532d",
-                "#bbf7d0",
-            ]
+            option = {
+                "backgroundColor": "transparent",
+                "tooltip": {
+                    "trigger": "axis",
+                    "axisPointer": {"type": "shadow"}
+                },
+                "xAxis": {
+                    "type": "category",
+                    "data": bar_df["jenis_usaha"].tolist(),
+                    "axisLabel": {
+                        "color": "#e5e7eb",
+                        "rotate": 30
+                    }
+                },
+                "yAxis": {
+                    "type": "value",
+                    "axisLabel": {
+                        "color": "#e5e7eb"
+                    },
+                    "splitLine": {
+                        "lineStyle": {"color": "#1e293b"}
+                    }
+                },
+                "series": [
+                    {
+                        "name": f"UMKM {tahun_pie}",
+                        "type": "bar",
+                        "data": bar_df["jumlah_umkm"].tolist(),
+                        "barWidth": "55%",
+                        "itemStyle": {
+                            "color": "#22c55e",
+                            "borderRadius": [6, 6, 0, 0]
+                        },
+                        "label": {
+                            "show": True,
+                            "position": "insideTop",
+                            "color": "#020617",
+                            "fontWeight": "bold"
+                        }
+                    }
+                ]
+            }
     
-            fig, ax = plt.subplots(figsize=(4.5, 4.5))
-            ax.pie(
-                pie_data,
-                labels=pie_data.index,
-                autopct="%1.1f%%",
-                startangle=140,
-                colors=colors[:len(pie_data)],
-                textprops={"color": "#e5e7eb", "fontsize": 9}
+            st_echarts(
+                options=option,
+                height="360px"
             )
-            ax.axis("equal")
-            fig.patch.set_facecolor("none")
-    
-            st.pyplot(fig)
     
     else:
-        st.markdown("### 🍰 Komposisi UMKM")
+        st.markdown("### 📊 Komposisi UMKM")
         st.info("Pilih Tahun Pie Chart di sidebar.")
-
