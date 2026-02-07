@@ -147,33 +147,38 @@ with col_kpi:
 
 st.markdown("---")
 
+st.markdown("## 📋 Detail Data UMKM")
 
-col_table, col_chart = st.columns([0.7, 0.3])
+tabel_df = df_f[[
+    "id",
+    "nama_kabupaten_kota",
+    "jenis_usaha",
+    "jumlah_umkm",
+    "tahun"
+]].copy()
 
-with col_table:
-    st.markdown("### 📋 Detail Data UMKM")
+tabel_df.columns = ["ID", "Kabupaten / Kota", "Jenis Usaha", "Jumlah UMKM", "Tahun"]
 
-    tabel_df = df_f[[
-        "id",
-        "nama_kabupaten_kota",
-        "jenis_usaha",
-        "jumlah_umkm",
-        "tahun"
-    ]].copy()
+st.dataframe(
+    tabel_df,
+    use_container_width=True,
+    height=420,  
+    hide_index=True
+)
 
-    tabel_df.columns = ["ID", "Kabupaten / Kota", "Jenis Usaha", "Jumlah UMKM", "Tahun"]
-    tabel_df["Jumlah UMKM"] = tabel_df["Jumlah UMKM"].map("{:,}".format)
+st.markdown("---")
 
-    st.dataframe(tabel_df, use_container_width=True, height=500, hide_index=True)
+col_trend, col_comp = st.columns([0.5, 0.5])
 
-with col_chart:
+with col_trend:
     st.markdown("### 📈 Tren Tahunan")
     line_df = df_f.groupby("tahun")["jumlah_umkm"].sum()
-    st.line_chart(line_df)
+    st.line_chart(line_df, height=300)
+
+with col_comp:
+    st.markdown(f"### 📊 Proporsi UMKM Tahun {tahun_pie}")
 
     if tahun_pie:
-        st.markdown(f"### Proporsi UMKM Tahun {tahun_pie}")
-       
         bar_df = (
             df[
                 (df["tahun"] == tahun_pie) &
@@ -182,61 +187,26 @@ with col_chart:
             .groupby("jenis_usaha")["jumlah_umkm"]
             .sum()
             .reset_index()
-            .sort_values("jumlah_umkm", ascending=False)
         )
-    
-        if bar_df.empty:
-            st.info("Tidak ada data untuk kombinasi filter tersebut.")
-        else:
-            option = {
-                "backgroundColor": "transparent",
-                "tooltip": {
-                    "trigger": "axis",
-                    "axisPointer": {"type": "shadow"}
-                },
-                "xAxis": {
-                    "type": "category",
-                    "data": bar_df["jenis_usaha"].tolist(),
-                    "axisLabel": {
-                        "color": "#e5e7eb",
-                        "rotate": 30
-                    }
-                },
-                "yAxis": {
-                    "type": "value",
-                    "axisLabel": {
-                        "color": "#e5e7eb"
-                    },
-                    "splitLine": {
-                        "lineStyle": {"color": "#1e293b"}
-                    }
-                },
-                "series": [
-                    {
-                        "name": f"UMKM {tahun_pie}",
-                        "type": "bar",
-                        "data": bar_df["jumlah_umkm"].tolist(),
-                        "barWidth": "55%",
-                        "itemStyle": {
-                            "color": "#22c55e",
-                            "borderRadius": [6, 6, 0, 0]
-                        },
-                        "label": {
-                            "show": True,
-                            "position": "insideTop",
-                            "color": "#020617",
-                            "fontWeight": "bold"
-                        }
-                    }
-                ]
-            }
-    
-            st_echarts(
-                options=option,
-                height="360px"
-            )
-    
-    else:
-        st.markdown("### 📊 Komposisi UMKM")
-        st.info("Pilih Tahun Pie Chart di sidebar.")
 
+        option = {
+            "backgroundColor": "transparent",
+            "tooltip": {"trigger": "axis"},
+            "xAxis": {
+                "type": "category",
+                "data": bar_df["jenis_usaha"].tolist(),
+                "axisLabel": {"rotate": 30, "color": "#e5e7eb"}
+            },
+            "yAxis": {
+                "type": "value",
+                "axisLabel": {"color": "#e5e7eb"},
+                "splitLine": {"lineStyle": {"color": "#1e293b"}}
+            },
+            "series": [{
+                "type": "bar",
+                "data": bar_df["jumlah_umkm"].tolist(),
+                "itemStyle": {"color": "#22c55e"}
+            }]
+        }
+
+        st_echarts(option, height="300px")
