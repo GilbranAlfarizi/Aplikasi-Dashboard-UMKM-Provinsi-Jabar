@@ -140,8 +140,8 @@ hr {
 
 @st.cache_data
 def load_data():
-    df = pd.read_csv("UMKM_JABAR_2016_2023.csv")
-    coord = pd.read_csv("KOORDINAT_KAB_KOTA_JABAR (2).csv")
+    df = pd.read_csv("UMKM_JABAR_2016_20232.csv")
+    coord = pd.read_csv("KOORDINAT_KAB_KOTA_JABAR.csv")
 
     df["nama_kabupaten_kota"] = df["nama_kabupaten_kota"].str.upper().str.strip()
     df["jenis_usaha"] = df["jenis_usaha"].str.upper().str.strip()
