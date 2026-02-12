@@ -179,10 +179,6 @@ if not tahun_filter or not jenis_filter:
 
 df_f = df[df["tahun"].isin(tahun_filter) & df["jenis_usaha"].isin(jenis_filter)]
 
-# =====================
-# HITUNG PERTUMBUHAN UMKM (%)
-# BERDASARKAN TAHUN TERPILIH
-# =====================
 growth_text = "N/A"
 growth_value = None
 
@@ -198,7 +194,6 @@ if len(tahun_filter) >= 1:
             growth_value = ((total_end - total_start) / total_start) * 100
             growth_text = f"{growth_value:+.2f}%"
     else:
-        # jika hanya 1 tahun dipilih
         prev_year = start_year - 1
         total_prev = df[df["tahun"] == prev_year]["jumlah_umkm"].sum()
         total_now = df[df["tahun"] == start_year]["jumlah_umkm"].sum()
@@ -257,13 +252,19 @@ tabel_df = df_f[[
     "tahun"
 ]].copy()
 
+tabel_df = tabel_df.sort_values(
+    by=["tahun", "jumlah_umkm"],
+    ascending=[True, True]
+)
+
 tabel_df.columns = ["ID", "Kabupaten / Kota", "Jenis Usaha", "Jumlah UMKM", "Tahun"]
+
 tabel_df["Jumlah UMKM"] = tabel_df["Jumlah UMKM"].map("{:,}".format)
 
 st.dataframe(
     tabel_df,
     use_container_width=True,
-    height=420,  
+    height=420,
     hide_index=True
 )
 
@@ -311,20 +312,3 @@ with col_comp:
         }
 
         st_echarts(option, height="300px")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
