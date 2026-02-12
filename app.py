@@ -140,7 +140,7 @@ hr {
 
 @st.cache_data
 def load_data():
-    df = pd.read_csv("UMKM_JABAR_ECONOMIC_NATURAL.csv")
+    df = pd.read_csv("UMKM_JABAR_2016_2023.csv")
     coord = pd.read_csv("KOORDINAT_KAB_KOTA_JABAR.csv")
 
     df["nama_kabupaten_kota"] = df["nama_kabupaten_kota"].str.upper().str.strip()
@@ -312,4 +312,5 @@ with col_comp:
         }
 
         st_echarts(option, height="300px")
+
 
